@@ -1,0 +1,145 @@
+*,*::after,*::before{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body{
+  background-color: #8d8d8d !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+#drum-machine{
+ 
+  width: 40vw;
+  height: 50vh;
+  border: 5px solid orange;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  background-color: #b3b3b3;
+  padding: 10px 20px;
+  column-gap: 2px;
+}
+.all-drumpads{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: repeat(3,1fr);
+
+
+}
+.drum-pad{
+  width: 50%;
+  height: 50%;
+ font-size: 1.2rem;
+ font-weight: bold;
+  color: black;
+  place-self: center;
+  background-color: grey;
+ 
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  box-shadow: black 3px 3px 5px;
+}
+
+.other-elements{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+#display{
+  width: 90%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  background-color: grey;
+  text-align: center;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  background: black;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+input[type='range']::-webkit-slider-thumb{
+  height: 20px;
+  width: 10px;
+  background: orange !important;
+}
+
+.yellow{
+  background-color: orange;
+}
+.form-check-label{
+  font-weight: bold !important;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.form-check-input{
+  width: 60px !important;
+  height: 20px !important;
+  margin-right: 10px;
+  cursor: pointer;
+ 
+}
+
+.form-label{
+  font-weight: bold !important;
+  font-size: 1.2rem;
+
+ display: flex;
+ justify-content: center;
+ align-items: center;
+
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: orange !important;
+}
+
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {   
+    background-color: orange !important;
+   } 
+
+   .custom-checkbox .custom-control-input:active ~ .custom-control-label::before {
+    background-color: orange !important; 
+  }
+
+  .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: orange !important;
+  }
+
+#playAll{
+  width: 120px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  background-color: grey;
+  text-align: center;
+  border: 2px solid orange;
+  border-radius: 30px;
+  font-size: 1.2rem;
+
+}
+@media (max-width:800px) and (min-width:500px){
+  #drum-machine{
+    width: 60vw;
+    display: grid;
+    grid-template-columns: 2fr 100px;
+  }
+  #playAll{
+    width: 100px;
+  }
+}
