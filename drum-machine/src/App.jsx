@@ -10,6 +10,7 @@ function App() {
   const powerRef=useRef(null)
   const volumeRef=useRef(0)
   const [disabledButton,setDisabledButton]=useState(false)
+
   const data=[
     {
       audio:'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3',
@@ -77,32 +78,69 @@ function App() {
   ]
 
   let currenTIndex=0
+
+  let timeout 
+
   function playAllTones(){
    
+    clearTimeout(timeout)
+    
 
-  if(currenTIndex<playAll.length){
-  const currentAudio=playAll[currenTIndex]
- 
-   currentAudio.addEventListener("ended",()=>{
-    currenTIndex=currenTIndex+1 
-    playAllTones()
-   })
-   currentAudio.play()
-   }
-
-   if(currenTIndex===playAll.length){
-    setTimeout(()=>{
-     
-      setDisabledButton(false)
-      setPlayAll([])
-      console.log(playAll,'after promise')
- 
-    },3000)
-
-   }
+   
+       if(currenTIndex<(playAll.length)){
+        const currentAudio=playAll[currenTIndex]
+       
+         currentAudio.addEventListener("ended",()=>{
+          currenTIndex=currenTIndex+1 
+          playAllTones()
+         })
+         currentAudio.play()
+         }
+      
+         if(currenTIndex===playAll.length){
+          timeout=setTimeout(()=>{
+           
+            setDisabledButton(false)
+            setPlayAll([])
+            
+       
+          },3000)
+      
+         }
 
 
   }
+  
+
+  function playSoundWithkey(e){
+    if(powerRef.current.checked===false){
+      alert("power is off")
+      return
+    }
+    
+    const keyCodes=['Q','W','E','A','S','D','Z','X','C']
+    if(keyCodes.includes(e.key.toUpperCase())){
+   
+     
+      const audioElement=document.getElementById(e.key.toUpperCase())
+      setPlayAll([...playAll,audioElement])
+
+      console.log(playAll,'playAll')
+
+      audioElement.play()
+      audioElement.volume=volumeRef.current.value
+      const documentElement=data.find(item=>item.key===e.key.toUpperCase())
+      setPlayState(documentElement.name)
+      const documentElementWithId=document.getElementById(documentElement.keyCode)
+      documentElementWithId.classList.add('yellow')
+      setTimeout(()=>{
+        documentElementWithId.classList.remove('yellow')
+      },200)
+
+    }
+
+  }
+ 
  
 
  
@@ -120,32 +158,7 @@ function App() {
 
 
 
-  function playSoundWithkey(e){
-    if(powerRef.current.checked===false){
-      alert("power is off")
-      return
-    }
-    
-    const keyCodes=['Q','W','E','A','S','D','Z','X','C']
-    if(keyCodes.includes(e.key.toUpperCase())){
-   
-     
-      const audioElement=document.getElementById(e.key.toUpperCase())
-      setPlayAll([...playAll,audioElement])
-      audioElement.play()
-      audioElement.volume=volumeRef.current.value
-      const documentElement=data.find(item=>item.key===e.key.toUpperCase())
-      setPlayState(documentElement.name)
-      const documentElementWithId=document.getElementById(documentElement.keyCode)
-      documentElementWithId.classList.add('yellow')
-      setTimeout(()=>{
-        documentElementWithId.classList.remove('yellow')
-      },200)
 
-    }
-
-  }
- 
 
   const playSound=({audio,key,name,keyCode})=>{
     if(powerRef.current.checked===false){
@@ -157,6 +170,7 @@ function App() {
     setPlayState(name)
     const audioElement=document.getElementById(audioID)
     setPlayAll([...playAll,audioElement])
+    console.log(playAll,'playAll by click')
     
     audioElement.volume=volumeRef.current.value
     audioElement.play()
