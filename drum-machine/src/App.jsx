@@ -2,14 +2,19 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button, useColorMode } from '@chakra-ui/react';
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 
 function App() {
+  const { colorMode, toggleColorMode } = useColorMode()
   const [playState,setPlayState]=useState('')
   const [playAll,setPlayAll]=useState([])
   const powerRef=useRef(null)
   const volumeRef=useRef(0)
   const [disabledButton,setDisabledButton]=useState(false)
+
+
 
   const data=[
     {
@@ -81,12 +86,42 @@ function App() {
 
   let timeout 
 
+
+  function playSoundWithkey(e){
+    if(powerRef.current.checked===false){
+      alert("power is off")
+      return
+    }
+    
+    const keyCodes=['Q','W','E','A','S','D','Z','X','C']
+    if(keyCodes.includes(e.key.toUpperCase())){
+   
+     
+      const audioElement=document.getElementById(e.key.toUpperCase())
+      setPlayAll([...playAll,audioElement])
+ 
+      audioElement.play()
+      audioElement.volume=volumeRef.current.value
+      const documentElement=data.find(item=>item.key===e.key.toUpperCase())
+      setPlayState(documentElement.name)
+      const documentElementWithId=document.getElementById(documentElement.keyCode)
+      documentElementWithId.classList.add('yellow')
+      setTimeout(()=>{
+        documentElementWithId.classList.remove('yellow')
+      },200)
+
+    }
+
+  }
+ 
+
+
+
   function playAllTones(){
    
     clearTimeout(timeout)
-    
 
-   
+
        if(currenTIndex<(playAll.length)){
         const currentAudio=playAll[currenTIndex]
        
@@ -112,34 +147,6 @@ function App() {
   }
   
 
-  function playSoundWithkey(e){
-    if(powerRef.current.checked===false){
-      alert("power is off")
-      return
-    }
-    
-    const keyCodes=['Q','W','E','A','S','D','Z','X','C']
-    if(keyCodes.includes(e.key.toUpperCase())){
-   
-     
-      const audioElement=document.getElementById(e.key.toUpperCase())
-      setPlayAll([...playAll,audioElement])
-
-      console.log(playAll,'playAll')
-
-      audioElement.play()
-      audioElement.volume=volumeRef.current.value
-      const documentElement=data.find(item=>item.key===e.key.toUpperCase())
-      setPlayState(documentElement.name)
-      const documentElementWithId=document.getElementById(documentElement.keyCode)
-      documentElementWithId.classList.add('yellow')
-      setTimeout(()=>{
-        documentElementWithId.classList.remove('yellow')
-      },200)
-
-    }
-
-  }
  
  
 
@@ -188,7 +195,8 @@ function App() {
  
 
   return (
-   <div id='drum-machine'>
+    <div className={colorMode==='light'?'whole-div-light':'whole-div'}>
+        <div id='drum-machine'>
    <div className='all-drumpads'>
     {data.map((item,index)=>{
       return <div key={index}id={item.keyCode}className='drum-pad'onClick={()=>playSound(item)}>
@@ -217,8 +225,20 @@ function App() {
    </div>
 
    </div>
+
+ 
   
    </div>
+   <div className='toggle-button'>
+   <Button onClick={toggleColorMode}>
+   { colorMode === 'light' ? <MoonIcon /> : <SunIcon/> }<h6 className='theme'>Change Theme</h6>
+      </Button>
+    
+   </div>
+ 
+
+    </div>
+ 
   )
 }
 
